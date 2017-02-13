@@ -9,7 +9,6 @@ public class FHOpenFile {
 	{
 		// Dialog zum �ffnen von Dateien anzeigen.
 		this.openFile.showOpenDialog(null);
-		
 	}
 
 }
