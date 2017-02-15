@@ -15,28 +15,43 @@ import javax.swing.JTextPane;
 
 
 
-public class Oberflaeche extends JFrame implements ActionListener {
+public class Oberflaeche extends JFrame  {
 
 	public static void main(String[] args) {
 	//Erstellt ein Objekt der Klasse Oberflaeche	
 	Oberflaeche fr = new Oberflaeche ();
-	fr.setVisible(true);
+	
 	}
 	
 	// Array mit allen MenuItems 
 	JMenuItem[] mI = {
 			new FileHideJMenuItem("Extract", new ActionListener() {
-				
-				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					
+					System.out.println("Extract");
 				}
 			}),
-			new JMenuItem("refrieve"),
-			new JMenuItem("quit"),
-			new JMenuItem("about")
+			new ExtractJMenuItem("Refrieve", new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("Refrieve");
+				}
+			}),
+			new QuitJMenuItem("Quit", new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+				
+			}),
+			new AboutJMenuItem("About", new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					new AboutFrame();
+					frame.setEnabled(false);
+				}
+				
+			}),
+			
 	};
+			
+
 	ArrayList<Integer> seperators = new ArrayList<Integer>() {{
 	    add(1);
 	}};
@@ -48,6 +63,7 @@ public class Oberflaeche extends JFrame implements ActionListener {
 	public Oberflaeche()
 	{
 		frame.setSize(500, 500);
+		frame.setResizable(false);
 		
 		//Erstelle die Menubar
 		JMenuBar menuBar = new JMenuBar();
@@ -60,20 +76,14 @@ public class Oberflaeche extends JFrame implements ActionListener {
 		
 		//F�gt alle MenuItem zu dem Men�s hinzu
 		
-		for(int i = 0; i < mI.length ; i++)
+		for(int i = 0; i < 3 ; i++)
 		{
 			fileMenu.add(mI[i]);
 			if(seperators.contains(i)) {
 				fileMenu.addSeparator();
-				mI[i].addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-					}
-				});
 			}
 		}
+		helpMenu.add(mI[3]);
 		
 		frame.setJMenuBar(menuBar);
 		frame.getContentPane().setLayout(null);
@@ -82,8 +92,8 @@ public class Oberflaeche extends JFrame implements ActionListener {
 		lblDragDrop.setBounds(10, 11, 484, 441);
 		frame.getContentPane().add(lblDragDrop);
 		
-		/* es ist m�glich mit Tastenkombinationen die gew�nschte Aktion,
-		 * die von den MenuItems beschrieben wird, schneller auszuf�hren.
+		/* es ist moeglich mit Tastenkombinationen die gewaenschte Aktion,
+		 * die von den MenuItems beschrieben wird, schneller auszufuehren.
 		 */
 		mI[1].setAccelerator(KeyStroke.getKeyStroke(
 		      KeyEvent.VK_1, ActionEvent.ALT_MASK));
@@ -92,48 +102,15 @@ public class Oberflaeche extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 	
-	/*
-	 * �berpr�ft ob die MenuItems zu dem ActionListener hinzugef�gt worden ist.
-	 * Ist dies der Fall werden die unten gennanten Funktionen ausgef�hrt.
-	 */
-	public void actionPerformed(ActionEvent ae) {
-		
-		if(ae.getSource() == mI[0]){
-	           new FHOpenFile();
-	     }
-		else if(ae.getSource() == mI[1])
-		{
-			new FHSaveFile();
-		}
-		
-		else if (ae.getSource() == this.mI[2]){
-			System.out.println("hide file");
-		}
-		else if (ae.getSource() == this.mI[3])
-			{
-				System.out.println("extract file");
-			}
-		else if(ae.getSource()== this.mI[4])
-		{
-			System.out.println("refrieve file");	
-		}
-		else if(ae.getSource()== this.mI[5])
-		{
-			System.out.println("quit");
-		}
-		/*
-		 * About Fenster
-		 */
-		
-		else if (ae.getSource()== this.mI[6])
-		{
-			new AboutFrame();
-		}
-		
+	
+
+	
+	
+	
 		
 	}
 	
 	
 	
 	
-}
+
