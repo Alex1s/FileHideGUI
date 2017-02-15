@@ -2,6 +2,9 @@ package org.filehide.filehidegui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,34 +15,38 @@ import javax.swing.JTextPane;
 
 
 
-public class Oberflaeche implements ActionListener {
-
-	
+public class Oberflaeche extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 	//Erstellt ein Objekt der Klasse Oberflaeche	
 	Oberflaeche fr = new Oberflaeche ();
 	fr.setVisible(true);
-		
-		
-		// TODO Auto-generated method stub
-
 	}
 	
-	private void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
 	// Array mit allen MenuItems 
-	static JMenuItem[] mI = {new JMenuItem ("OpenFile"),new JMenuItem ("SaveFile"), new JMenuItem("Hide"), new JMenuItem("extract"),
-			new JMenuItem("refrieve"), new JMenuItem("quit"), new JMenuItem("about")};
-	static JLabel lblDragDrop;
-	static JTextPane txtpnAboutAlexisUnd;
-	static JFrame frame = new JFrame("FileHide");
+	JMenuItem[] mI = {
+			new FileHideJMenuItem("Extract", new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			}),
+			new JMenuItem("refrieve"),
+			new JMenuItem("quit"),
+			new JMenuItem("about")
+	};
+	ArrayList<Integer> seperators = new ArrayList<Integer>() {{
+	    add(1);
+	}};
+	
+	JLabel lblDragDrop;
+	JTextPane txtpnAboutAlexisUnd;
+	JFrame frame = new JFrame("FileHide");
 	
 	public Oberflaeche()
 	{
-		
 		frame.setSize(500, 500);
 		
 		//Erstelle die Menubar
@@ -53,30 +60,20 @@ public class Oberflaeche implements ActionListener {
 		
 		//F�gt alle MenuItem zu dem Men�s hinzu
 		
-		for(int i = 0; i < 2; i++)
+		for(int i = 0; i < mI.length ; i++)
 		{
 			fileMenu.add(mI[i]);
-			mI[i].addActionListener(this);
+			if(seperators.contains(i)) {
+				fileMenu.addSeparator();
+				mI[i].addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+				});
+			}
 		}
-		/*
-		 * Seperator = wagerechter Strich. Seperator wurde eingef�hrt um
-		 * die verschiedenen JMEnuItems oprisch zu unterscheiden.
-		 */
-		fileMenu.addSeparator();
-		
-	    for( int i = 2; i < 5;i++)
-	    {
-	    	fileMenu.add(mI[i]);
-	    	mI[i].addActionListener(this);
-	    }
-	    
-		fileMenu.addSeparator();
-		
-		fileMenu.add(mI[5]);
-		mI[5].addActionListener(this);
-		
-		helpMenu.add(mI[6]);
-		mI[6].addActionListener(this);
 		
 		frame.setJMenuBar(menuBar);
 		frame.getContentPane().setLayout(null);
@@ -85,26 +82,14 @@ public class Oberflaeche implements ActionListener {
 		lblDragDrop.setBounds(10, 11, 484, 441);
 		frame.getContentPane().add(lblDragDrop);
 		
-		
-		
-		
 		/* es ist m�glich mit Tastenkombinationen die gew�nschte Aktion,
 		 * die von den MenuItems beschrieben wird, schneller auszuf�hren.
 		 */
 		mI[1].setAccelerator(KeyStroke.getKeyStroke(
 		      KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		
-		
 		mI[2].setAccelerator(KeyStroke.getKeyStroke(
 			  KeyEvent.VK_2, ActionEvent.ALT_MASK));
-		
-	
-		
 		frame.setVisible(true);
-		
-		
-		
-	
 	}
 	
 	/*
@@ -113,26 +98,26 @@ public class Oberflaeche implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		
-		if(ae.getSource() == Oberflaeche.mI[0]){
+		if(ae.getSource() == mI[0]){
 	           new FHOpenFile();
 	     }
-		else if(ae.getSource() == Oberflaeche.mI[1])
+		else if(ae.getSource() == mI[1])
 		{
 			new FHSaveFile();
 		}
 		
-		else if (ae.getSource() == Oberflaeche.mI[2]){
+		else if (ae.getSource() == this.mI[2]){
 			System.out.println("hide file");
 		}
-		else if (ae.getSource() == Oberflaeche.mI[3])
+		else if (ae.getSource() == this.mI[3])
 			{
 				System.out.println("extract file");
 			}
-		else if(ae.getSource()== Oberflaeche.mI[4])
+		else if(ae.getSource()== this.mI[4])
 		{
 			System.out.println("refrieve file");	
 		}
-		else if(ae.getSource()== Oberflaeche.mI[5])
+		else if(ae.getSource()== this.mI[5])
 		{
 			System.out.println("quit");
 		}
@@ -140,7 +125,7 @@ public class Oberflaeche implements ActionListener {
 		 * About Fenster
 		 */
 		
-		else if (ae.getSource()== Oberflaeche.mI[6])
+		else if (ae.getSource()== this.mI[6])
 		{
 			new AboutFrame();
 		}
