@@ -1,11 +1,11 @@
 package org.filehide.filehidegui;
 import javax.swing.JFileChooser;
 
-public class FHOpenFile {
+public class FHExtractFile {
 	//JFileChooser-Objekt wird erstellt.
 	JFileChooser openFile = new JFileChooser();
 	
-	public FHOpenFile()
+	public FHExtractFile()
 	{
 		// Dialog zum �ffnen von Dateien anzeigen.
 		this.openFile.showOpenDialog(null);

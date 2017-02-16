@@ -25,12 +25,12 @@ public class Oberflaeche extends JFrame  {
 	JMenuItem[] mI = {
 			new FileHideJMenuItem("Extract", new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("Extract");
+					new FHExtractFile();
 				}
 			}),
 			new ExtractJMenuItem("Refrieve", new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("Refrieve");
+					new FHRefrieveFile();
 				}
 			}),
 			new QuitJMenuItem("Quit", new ActionListener(){
