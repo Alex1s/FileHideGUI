@@ -2,9 +2,8 @@ package org.filehide.filehidegui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,10 +11,9 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
-
-
-
 public class Oberflaeche extends JFrame  {
+
+	
 
 	public static void main(String[] args) {
 	//Erstellt ein Objekt der Klasse Oberflaeche	
@@ -43,13 +41,13 @@ public class Oberflaeche extends JFrame  {
 			}),
 			new AboutJMenuItem("About", new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
-					new AboutFrame();
-					frame.setEnabled(false);
+					new AboutFrame();	
 				}
 				
-			}),
+			})
 			
 	};
+			
 			
 
 	ArrayList<Integer> seperators = new ArrayList<Integer>() {{
@@ -58,7 +56,7 @@ public class Oberflaeche extends JFrame  {
 	
 	JLabel lblDragDrop;
 	JTextPane txtpnAboutAlexisUnd;
-	JFrame frame = new JFrame("FileHide");
+	static JFrame frame = new JFrame("FileHide");
 	
 	public Oberflaeche()
 	{
@@ -95,20 +93,20 @@ public class Oberflaeche extends JFrame  {
 		/* es ist moeglich mit Tastenkombinationen die gewaenschte Aktion,
 		 * die von den MenuItems beschrieben wird, schneller auszufuehren.
 		 */
+		
 		mI[1].setAccelerator(KeyStroke.getKeyStroke(
 		      KeyEvent.VK_1, ActionEvent.ALT_MASK));
 		mI[2].setAccelerator(KeyStroke.getKeyStroke(
 			  KeyEvent.VK_2, ActionEvent.ALT_MASK));
 		frame.setVisible(true);
+	
 	}
 	
-	
-
-	
+}
 	
 	
-		
-	}
+	
+	
 	
 	
 	
