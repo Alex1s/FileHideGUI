@@ -4,11 +4,11 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class AboutFrame extends JFrame  {
+	
 	// Fields
-	 JLabel mainLabel = new JLabel (AboutText.text);
 	
-	
-	
+	JLabel mainLabel = new JLabel (AboutText.text);
+	 
 	public AboutFrame() {
 		this.setSize(300, 100);
 		this.getContentPane().add(mainLabel);
@@ -17,23 +17,13 @@ public class AboutFrame extends JFrame  {
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter() {
 		         public void windowClosing(WindowEvent windowEvent){
-		            Oberflaeche.frame.setEnabled(true);
+		            MainFrame.mainFrame.setEnabled(true);
 		         } 
 		         
 		         public void windowOpened(WindowEvent windoeEvent)
 		         {
-		        	Oberflaeche.frame.setEnabled(false); 
+		        	MainFrame.mainFrame.setEnabled(false); 
 		         }
-		      });    
-	       
+		      });
 	}
-
-
-
-	
-
-
-
-	
-	
 }
