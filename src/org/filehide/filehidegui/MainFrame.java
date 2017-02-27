@@ -19,6 +19,7 @@ public class MainFrame extends JFrame  {
 	
 	public static void main(String[] args) {
 		mainFrame = new MainFrame ();
+		mainFrame.setVisible(true);
 	}
 	
 	
@@ -35,7 +36,10 @@ public class MainFrame extends JFrame  {
 					addActionListener(e -> new FHExtractFile());
 				}},
 				new JMenuItem("Retrieve") {{
-					addActionListener(e -> new FHRetrieveFile());
+					addActionListener((e) -> {
+						RetrieveFrame retrieveFrame = new RetrieveFrame();
+						retrieveFrame.setVisible(true);
+					});
 				}},
 				new JMenuItem("Quit") {{
 					addActionListener(e -> System.exit(0));
@@ -75,8 +79,6 @@ public class MainFrame extends JFrame  {
 		JLabel lblDragDrop = new JLabel("drag & drop a file here to hide or retrieve");
 		lblDragDrop.setBounds(10, 11, 484, 441);
 		this.getContentPane().add(lblDragDrop);
-		
-		this.setVisible(true);
 	}
 
 }
