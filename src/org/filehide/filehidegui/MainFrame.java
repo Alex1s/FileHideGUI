@@ -9,16 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame  {
-	
-	// TODO remove this var
-	static MainFrame mainFrame;
+class MainFrame extends JFrame  {
 	
 	public static void main(String[] args) {
-		mainFrame = new MainFrame ();
+		MainFrame mainFrame = new MainFrame ();
 		mainFrame.setVisible(true);
 	}
 	
@@ -32,14 +31,11 @@ public class MainFrame extends JFrame  {
 	
 	private JMenuItem[][] menuItems = {
 			{
-				new JMenuItem("Extract") {{
-					addActionListener(e -> new FHExtractFile());
+				new JMenuItem("Hide") {{
+					addActionListener((e) -> new HideSetup(MainFrame.this).start());
 				}},
-				new JMenuItem("Retrieve") {{
-					addActionListener((e) -> {
-						RetrieveFrame retrieveFrame = new RetrieveFrame();
-						retrieveFrame.setVisible(true);
-					});
+				new JMenuItem("Extract") {{
+					addActionListener(e -> new ExtractSetup(MainFrame.this).start());
 				}},
 				new JMenuItem("Quit") {{
 					addActionListener(e -> System.exit(0));
@@ -47,7 +43,13 @@ public class MainFrame extends JFrame  {
 			},
 			{
 				new JMenuItem("About") {{
-					addActionListener(e -> new AboutFrame());
+					addActionListener(e -> {
+						JOptionPane.showMessageDialog(
+								MainFrame.this,
+								"Entwickler:\tAlexis und Robert\nVersion:\t1.0",
+								"About", JOptionPane.INFORMATION_MESSAGE
+							);
+					});
 				}}
 			}
 	};
@@ -57,8 +59,14 @@ public class MainFrame extends JFrame  {
 			new HashSet<Integer>()
 	);
 	
+	private int[][] seperatorsAsArrays = {
+			{1},
+			{}
+	};
+	
 	private MainFrame() {
 		super("FileHide");
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(500, 500);
 		this.setResizable(false);
 		
@@ -69,6 +77,7 @@ public class MainFrame extends JFrame  {
 			for(int j = 0; j < this.menuItems[i].length; j++) {
 				this.menues[i].add(this.menuItems[i][j]);
 				if(this.seperators.get(i).contains(j)) {
+//				if(Arrays.asList(this.seperatorsAsArrays[i]).contains(j)) {
 					this.menues[i].addSeparator();
 				}
 			}
