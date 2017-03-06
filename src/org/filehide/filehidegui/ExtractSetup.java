@@ -3,9 +3,7 @@ package org.filehide.filehidegui;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.filehide.filehidelibrary.FHFile;
@@ -16,17 +14,10 @@ import org.filehide.filehidelibrary.NotFHFileException;
 /**
  * This setup will ask for user for everything necessary to extract a hidden file out of a FHFile.
  */
-class ExtractSetup {
-	
-	public static void main(String[] args) {
-		ExtractSetup setup = new ExtractSetup(null);
-		setup.start();
-	}
-	
-	Component parent;
+class ExtractSetup extends Setup {
 	
 	ExtractSetup(Component parent) {
-		this.parent = parent;
+		super(parent);
 	}
 	
 	/**
@@ -37,52 +28,34 @@ class ExtractSetup {
 	 * - the location to save the hidden file to
 	 */
 	void start() {
-		FHFile fileIn = null;
+		FHFile origin = null;
 		try {
-			fileIn = getInputFile();
-			if(fileIn == null) return;
+			File selectedFile = getFile(GetFileTypes.OPEN, "Select a FHFile.");
+			if(selectedFile == null) return;
+			origin = new FHFile(selectedFile);
 		} catch (NotFHFileException | FHFileCorruptException | IncompatibleFHFileVersionException | IOException e) {
 			showException(e);
 			return;
 		}
 
 		String password = null;
-		if(fileIn.encrypted()) {
-			password = getPassword(fileIn);
+		if(origin.encrypted()) {
+			password = getPassword(origin);
 			if(password == null) return;
 		}
 		
-		Path pathOut = getOutputFile().toPath();
-		if (pathOut == null) return;
+		File destination = getFile(GetFileTypes.SAVE, "Select where to save the hidden file to.");
+		if (destination == null) return;
 		
 		try {
 			if (password == null) {
-				fileIn.extractHiddenData(pathOut);
+				origin.extractHiddenData(destination.toPath());
 			} else {
-				fileIn.extractHiddenData(pathOut, password);
+				origin.extractHiddenData(destination.toPath(), password);
 			}
 		} catch (IOException e) {
 			showException(e);
 		}
-	}
-	
-	/**
-	 * Promts the user to enter his FHFile.
-	 * @return the FHFile the user entered or {@code null} if the user cancels
-	 * @throws NotFHFileException
-	 * @throws FHFileCorruptException
-	 * @throws IncompatibleFHFileVersionException
-	 * @throws IOException
-	 */
-	private FHFile getInputFile() throws NotFHFileException, FHFileCorruptException, IncompatibleFHFileVersionException, IOException {
-		JFileChooser inputFileChooser = new JFileChooser();
-		inputFileChooser.setDialogTitle("Select a FHFile.");
-		int response = inputFileChooser.showOpenDialog(this.parent);
-		if (response == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = inputFileChooser.getSelectedFile();
-			return new FHFile(selectedFile);
-		}
-		return null;
 	}
 	
 	/**
@@ -108,30 +81,6 @@ class ExtractSetup {
 			askAgain = true;
 		} while (!file.checkPassword(password));
 		return password;
-	}
-	
-	/**
-	 * Asks the user where to save the hidden file to.
-	 * @return the users choice or null of the user cancels
-	 */
-	private File getOutputFile() {
-		JFileChooser outputFileChooser = new JFileChooser();
-		outputFileChooser.setDialogTitle("Select where to save the hidden file to.");
-		
-		int response = outputFileChooser.showSaveDialog(this.parent);
-		if (response == JFileChooser.APPROVE_OPTION) {
-			File file = outputFileChooser.getSelectedFile();
-			return file;
-		}
-		return null;
-	}
-	
-	/**
-	 * Shows the message of the given exception to the user.
-	 * @param e the exception to show its message
-	 */
-	private void showException(Exception e) {
-		JOptionPane.showMessageDialog(this.parent, e.getMessage());
 	}
 	
 }
