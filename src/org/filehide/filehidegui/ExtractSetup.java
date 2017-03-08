@@ -55,7 +55,9 @@ class ExtractSetup extends Setup {
 			}
 		} catch (IOException e) {
 			showException(e);
+			return;
 		}
+		JOptionPane.showMessageDialog(this.parent, "Success!");
 	}
 	
 	/**

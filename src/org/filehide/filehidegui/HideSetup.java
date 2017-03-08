@@ -61,7 +61,9 @@ class HideSetup extends Setup {
 			}
 		} catch (FHFileCreationFailedException | IOException e) {
 			showException(e);
+			return;
 		}
+		JOptionPane.showMessageDialog(this.parent, "Success!");
 	}
 	
 	private String getPassword() {
