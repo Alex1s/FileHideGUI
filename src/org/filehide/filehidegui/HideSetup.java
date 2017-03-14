@@ -53,11 +53,11 @@ class HideSetup extends Setup {
 		// FIXME never succeeds but probably because of FileHideLibrary
 		try {
 			if(password == null) {
-				if(finalDestination == null) FHFile.hideFile(origin, destination);
-				else FHFile.hideFile(origin, destination, finalDestination.toPath());
+				if(finalDestination == null) FHFile.hide(origin, destination);
+				else FHFile.hide(origin, destination, finalDestination.toPath());
 			} else {
-				if(finalDestination == null) FHFile.hideFile(origin, destination, password);
-				else FHFile.hideFile(origin, destination, finalDestination.toPath(), password);
+				if(finalDestination == null) FHFile.hide(origin, destination, password);
+				else FHFile.hide(origin, destination, finalDestination.toPath(), password);
 			}
 		} catch (FHFileCreationFailedException | IOException e) {
 			showException(e);
