@@ -54,10 +54,10 @@ class HideSetup extends Setup {
 		try {
 			if(password == null) {
 				if(finalDestination == null) FHFile.hide(origin, destination);
-				else FHFile.hide(origin, destination, finalDestination.toPath());
+				else FHFile.hide(origin, destination, finalDestination);
 			} else {
 				if(finalDestination == null) FHFile.hide(origin, destination, password);
-				else FHFile.hide(origin, destination, finalDestination.toPath(), password);
+				else FHFile.hide(origin, destination, finalDestination, password);
 			}
 		} catch (FHFileCreationFailedException | IOException e) {
 			showException(e);

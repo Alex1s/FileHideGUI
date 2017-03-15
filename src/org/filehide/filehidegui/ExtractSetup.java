@@ -49,9 +49,9 @@ class ExtractSetup extends Setup {
 		
 		try {
 			if (password == null) {
-				origin.extractHiddenData(destination.toPath());
+				origin.extractHiddenData(destination);
 			} else {
-				origin.extractHiddenData(destination.toPath(), password);
+				origin.extractHiddenData(destination, password);
 			}
 		} catch (IOException e) {
 			showException(e);
