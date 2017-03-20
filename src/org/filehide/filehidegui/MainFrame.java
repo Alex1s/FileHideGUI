@@ -1,5 +1,10 @@
 package org.filehide.filehidegui;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.JLabel;
 
@@ -85,9 +91,30 @@ class MainFrame extends JFrame  {
 		
 		this.setJMenuBar(menuBar);
 		
-		JLabel lblDragDrop = new JLabel("drag & drop a file here to hide or retrieve");
+		JTextArea lblDragDrop = new JTextArea("drag and drop the file here to hide or retrieve");
 		lblDragDrop.setBounds(10, 11, 484, 441);
 		this.getContentPane().add(lblDragDrop);
-	}
+		
+		
+		
 
+	    lblDragDrop.setDropTarget(new DropTarget() {
+	        public synchronized void drop(DropTargetDropEvent evt) {
+	            try {
+	                evt.acceptDrop(DnDConstants.ACTION_COPY);
+	                List<File> droppedFiles = (List<File>) evt
+	                        .getTransferable().getTransferData(
+	                                DataFlavor.javaFileListFlavor);
+	                for (File file : droppedFiles) {
+	                    
+	                    lblDragDrop.setText(file.getAbsolutePath());
+	                }
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	    });
+
+}
+	
 }
