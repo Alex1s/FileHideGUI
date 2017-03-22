@@ -14,12 +14,19 @@ import org.filehide.filehidelibrary.FHFileCreationFailedException;
  */
 class HideSetup extends Setup {
 	
+	private File droppedFile;
+	
 	/**
 	 * Creates a new setup to hide a file within a file, finally creating a {@link FHFile}.
 	 * @param parent the component to show the dialogs above (MainFrame)
 	 */
 	HideSetup(Component parent) {
 		super(parent);
+	}
+	
+	HideSetup(Component parent, File droppedFile) {
+		super(parent);
+		this.droppedFile = droppedFile;
 	}
 	
 	/**
@@ -29,8 +36,14 @@ class HideSetup extends Setup {
 	 */
 	@Override
 	void start() {
-		File origin = getFile(GetFileTypes.OPEN, "Please select the file you want to hide.");
-		if(origin == null) return;
+		File origin;
+		if (this.droppedFile == null) {
+			origin = getFile(GetFileTypes.OPEN, "Please select the file you want to hide.");
+			if(origin == null) return;
+		} else {
+			origin = droppedFile;
+		}
+
 		
 		File destination = getFile(GetFileTypes.OPEN, "Please select the file you want to hide the other file in.");
 		if(destination == null) return;

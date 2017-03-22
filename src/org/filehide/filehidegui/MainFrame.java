@@ -1,10 +1,12 @@
 package org.filehide.filehidegui;
 
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,6 +19,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
+
+import org.filehide.filehidelibrary.FHFile;
+import org.filehide.filehidelibrary.FHFileCorruptException;
+import org.filehide.filehidelibrary.IncompatibleFHFileVersionException;
+import org.filehide.filehidelibrary.NotFHFileException;
+
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
@@ -60,6 +68,37 @@ class MainFrame extends JFrame  {
 			}
 	};
 	
+	JLabel dragAndDrapLabel = new JLabel("drag and drop the file here to hide or retrieve") {{
+		setEnabled(true);
+		setBounds(10, 11, 484, 441);
+		setDropTarget(new DropTarget() {
+	        public synchronized void drop(DropTargetDropEvent evt) {
+	        	
+                evt.acceptDrop(DnDConstants.ACTION_COPY);
+				List<File> droppedFiles;
+				try {
+					droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+	                if (droppedFiles.size() > 1) {
+	                	System.err.println("hi");
+						JOptionPane.showMessageDialog(MainFrame.this, "You are only allowed to hide one file.", "Error", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+	                File file = droppedFiles.get(0);
+	                try {
+						new FHFile(file);
+						System.out.println(file);
+						new ExtractSetup(MainFrame.this).start();
+					} catch (NotFHFileException | FHFileCorruptException | IncompatibleFHFileVersionException e) {
+						new HideSetup(MainFrame.this).start();
+						System.out.println("not a FHFile");
+					}
+				} catch (UnsupportedFlavorException | IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	    });
+	}};
+	
 	private List<Collection<Integer>> seperators = Arrays.asList(
 			new HashSet<Integer>(Arrays.asList(1)),
 			new HashSet<Integer>()
@@ -90,31 +129,8 @@ class MainFrame extends JFrame  {
 		}
 		
 		this.setJMenuBar(menuBar);
-		
-		JTextArea lblDragDrop = new JTextArea("drag and drop the file here to hide or retrieve");
-		lblDragDrop.setBounds(10, 11, 484, 441);
-		this.getContentPane().add(lblDragDrop);
-		
-		
-		
 
-	    lblDragDrop.setDropTarget(new DropTarget() {
-	        public synchronized void drop(DropTargetDropEvent evt) {
-	            try {
-	                evt.acceptDrop(DnDConstants.ACTION_COPY);
-	                List<File> droppedFiles = (List<File>) evt
-	                        .getTransferable().getTransferData(
-	                                DataFlavor.javaFileListFlavor);
-	                for (File file : droppedFiles) {
-	                    
-	                    lblDragDrop.setText(file.getAbsolutePath());
-	                }
-	            } catch (Exception ex) {
-	                ex.printStackTrace();
-	            }
-	        }
-	    });
+		this.getContentPane().add(dragAndDrapLabel);
+	}
 
-}
-	
 }
