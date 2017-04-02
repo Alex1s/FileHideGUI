@@ -85,16 +85,11 @@ class MainFrame extends JFrame  {
 					}
 	                File file = droppedFiles.get(0);
 	                try {
-						new FHFile(file);
-						System.out.println(file);
-						new ExtractSetup(MainFrame.this).start();
+						new ExtractSetup(MainFrame.this, new FHFile(file)).start();
 					} catch (NotFHFileException | FHFileCorruptException | IncompatibleFHFileVersionException e) {
-						new HideSetup(MainFrame.this).start();
-						System.out.println("not a FHFile");
+						new HideSetup(MainFrame.this, file).start();
 					}
-				} catch (UnsupportedFlavorException | IOException e) {
-					e.printStackTrace();
-				}
+				} catch (UnsupportedFlavorException | IOException ignored) {}
 	        }
 	    });
 	}};

@@ -16,8 +16,15 @@ import org.filehide.filehidelibrary.NotFHFileException;
  */
 class ExtractSetup extends Setup {
 	
+	private FHFile droppedFile;
+	
 	ExtractSetup(Component parent) {
 		super(parent);
+	}
+	
+	public ExtractSetup(Component parent, FHFile droppedFile) {
+		this(parent);
+		this.droppedFile = droppedFile;
 	}
 	
 	/**
@@ -29,14 +36,19 @@ class ExtractSetup extends Setup {
 	 */
 	void start() {
 		FHFile origin = null;
-		try {
-			File selectedFile = getFile(GetFileTypes.OPEN, "Select a FHFile.");
-			if(selectedFile == null) return;
-			origin = new FHFile(selectedFile);
-		} catch (NotFHFileException | FHFileCorruptException | IncompatibleFHFileVersionException | IOException e) {
-			showException(e);
-			return;
+		if(this.droppedFile == null) {
+			try {
+				File selectedFile = getFile(GetFileTypes.OPEN, "Select a FHFile.");
+				if(selectedFile == null) return;
+				origin = new FHFile(selectedFile);
+			} catch (NotFHFileException | FHFileCorruptException | IncompatibleFHFileVersionException | IOException e) {
+				showException(e);
+				return;
+			}
+		} else {
+			origin = droppedFile;
 		}
+
 
 		String password = null;
 		if(origin.encrypted()) {
